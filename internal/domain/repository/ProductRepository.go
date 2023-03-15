@@ -1,6 +1,6 @@
 package repository
 
-import "go-project/internal/domain/entity"
+import "github.com/gabrielmaximo/go-project/internal/domain/entity"
 
 type ProductRepository interface {
 	FindById(id string) (entity.Product, error)

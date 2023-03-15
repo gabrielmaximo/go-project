@@ -1,4 +1,4 @@
-module go-project
+module github.com/gabrielmaximo/go-project
 
 go 1.20
 

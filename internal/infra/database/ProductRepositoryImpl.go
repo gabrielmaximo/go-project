@@ -2,7 +2,7 @@ package database
 
 import (
 	"database/sql"
-	"go-project/internal/domain/entity"
+	"github.com/gabrielmaximo/go-project/internal/domain/entity"
 )
 
 type ProductRepositoryImpl struct {

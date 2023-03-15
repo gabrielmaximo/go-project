@@ -3,9 +3,9 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"github.com/gabrielmaximo/go-project/internal/domain/entity"
+	"github.com/gabrielmaximo/go-project/internal/infra/database"
 	_ "github.com/lib/pq"
-	"go-project/internal/domain/entity"
-	"go-project/internal/infra/database"
 )
 
 func main() {
