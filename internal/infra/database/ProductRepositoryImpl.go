@@ -70,7 +70,7 @@ func (r *ProductRepositoryImpl) FindById(id string) (*entity.Product, error) {
 }
 
 func (r *ProductRepositoryImpl) FindAll() (*[]entity.Product, error) {
-	rows, err := r.DB.Query("select id, name, price from products")
+	rows, err := r.DB.Query("select * from products")
 	if err != nil {
 		return nil, err
 	}

@@ -6,10 +6,12 @@ import (
 	"github.com/gabrielmaximo/go-project/internal/domain/entity"
 	"github.com/gabrielmaximo/go-project/internal/infra/database"
 	_ "github.com/lib/pq"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 func main() {
-	db, err := sql.Open("postgres", "user=postgres password=postgres dbname=go-project sslmode=disable")
+	sqlDB, err := sql.Open("postgres", "user=postgres password=postgres dbname=go-project sslmode=disable")
 	if err != nil {
 		panic(err)
 	}
@@ -18,37 +20,39 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
-	}(db)
-	productRepository := database.NewProductRepositoryImpl(db)
-	product := entity.NewProduct("foo", 23.3)
+	}(sqlDB)
+
+	ormDB, err := gorm.Open(
+		postgres.New(
+			postgres.Config{
+				DSN: "host=localhost user=postgres password=postgres dbname=go-project port=5432 sslmode=disable",
+			},
+		),
+		&gorm.Config{},
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(ormDB.Config.Dialector.Name())
+
+	productRepository := database.NewProductRepositoryImpl(sqlDB)
+	product := entity.NewProduct("Notebook", 499.90)
+	product2 := entity.NewProduct("Monitor", 299.90)
+	product3 := entity.NewProduct("Mouse", 99.90)
 	err = productRepository.Create(product)
-	product2 := entity.NewProduct("foo2", 232.32)
+	if err != nil {
+		panic(err)
+	}
 	err = productRepository.Create(product2)
-	product3 := entity.NewProduct("foo3", 2.28)
+	if err != nil {
+		panic(err)
+	}
 	err = productRepository.Create(product3)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(product)
-	product.Price = 100.00
-	product.Name = "Notebook"
-	err = productRepository.Update(product)
-	if err != nil {
-		panic(err)
-	}
-	err = productRepository.Delete(product3.ID)
-	if err != nil {
-		panic(err)
-	}
-	findedProduct, err := productRepository.FindById(product3.ID)
-	if err != nil {
-		panic(err)
-	}
-	productList, err := productRepository.FindAll()
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(findedProduct)
-	fmt.Println("-----------------------------------------------")
-	fmt.Println(productList)
+	products, err := productRepository.FindAll()
+
+	fmt.Println(*products)
 }
