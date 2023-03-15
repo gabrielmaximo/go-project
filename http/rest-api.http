@@ -1,0 +1,12 @@
+
+### create a new item
+POST {{host}}/api/item
+Content-Type: application/json
+
+{}
+
+### list the items
+GET http://localhost:80/api/item?id=99
+Accept: application/json
+
+###
