@@ -2,8 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
-	"github.com/gabrielmaximo/go-project/internal/domain/entity"
 	"github.com/gabrielmaximo/go-project/internal/infra/database"
 	_ "github.com/lib/pq"
 	"gorm.io/driver/postgres"
@@ -33,26 +31,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	_ = database.NewProductRepositoryGormImpl(ormDB)
 
-	fmt.Println(ormDB.Config.Dialector.Name())
-
-	productRepository := database.NewProductRepositoryImpl(sqlDB)
-	product := entity.NewProduct("Notebook", 499.90)
-	product2 := entity.NewProduct("Monitor", 299.90)
-	product3 := entity.NewProduct("Mouse", 99.90)
-	err = productRepository.Create(product)
-	if err != nil {
-		panic(err)
-	}
-	err = productRepository.Create(product2)
-	if err != nil {
-		panic(err)
-	}
-	err = productRepository.Create(product3)
-	if err != nil {
-		panic(err)
-	}
-	products, err := productRepository.FindAll()
-
-	fmt.Println(*products)
 }

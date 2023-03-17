@@ -50,7 +50,7 @@ func (r *ProductRepositoryImpl) Update(product *entity.Product) error {
 }
 
 func (r *ProductRepositoryImpl) FindById(id string) (*entity.Product, error) {
-	stmt, err := r.DB.Prepare("select id, name, price from products where id = $1")
+	stmt, err := r.DB.Prepare("select * from products where id = $1")
 	if err != nil {
 		return nil, err
 	}
@@ -62,7 +62,7 @@ func (r *ProductRepositoryImpl) FindById(id string) (*entity.Product, error) {
 	}(stmt)
 	var product entity.Product
 	rows := stmt.QueryRow(id)
-	err = rows.Scan(&product.ID, &product.Name, &product.Price)
+	err = rows.Scan(&product.Name, &product.Price, &product.ID)
 	if err != nil {
 		return nil, err
 	}
@@ -83,7 +83,7 @@ func (r *ProductRepositoryImpl) FindAll() (*[]entity.Product, error) {
 	var products []entity.Product
 	for rows.Next() {
 		var product entity.Product
-		err = rows.Scan(&product.ID, &product.Name, &product.Price)
+		err = rows.Scan(&product.Name, &product.Price, &product.ID)
 		if err != nil {
 			return nil, err
 		}
